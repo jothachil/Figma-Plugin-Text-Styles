@@ -271,7 +271,6 @@ export const pluginApi = createPluginAPI({
   },
   getColorsFromSelection() {
     const selection = figma.currentPage.selection;
-    console.log(selection);
     if (selection.length === 0) {
       return { error: "No frame selected" };
     }
@@ -281,20 +280,24 @@ export const pluginApi = createPluginAPI({
       return { error: "Selected item is not a frame" };
     }
 
-    const colors = new Set<{ hex: string; variableName: string | null }>();
+    const colors = new Set<{
+      hex: string;
+      variableName: string | null;
+      type: string;
+    }>();
 
     function traverseNode(node) {
       if ("fills" in node) {
         node.fills.forEach((fill) => {
           if (fill.type === "SOLID") {
-            addColor(fill.color, fill.boundVariables?.color);
+            addColor(fill.color, fill.boundVariables?.color, "fill");
           }
         });
       }
       if ("strokes" in node) {
         node.strokes.forEach((stroke) => {
           if (stroke.type === "SOLID") {
-            addColor(stroke.color, stroke.boundVariables?.color);
+            addColor(stroke.color, stroke.boundVariables?.color, "stroke");
           }
         });
       }
@@ -303,7 +306,7 @@ export const pluginApi = createPluginAPI({
       }
     }
 
-    function addColor(color, boundVariable) {
+    function addColor(color, boundVariable, type) {
       const { r, g, b } = color;
       const hexColor = rgbToHex(r, g, b);
       let variableName = null;
@@ -316,7 +319,7 @@ export const pluginApi = createPluginAPI({
         }
       }
 
-      colors.add({ hex: hexColor, variableName });
+      colors.add({ hex: hexColor, variableName, type });
     }
 
     traverseNode(frame);

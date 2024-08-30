@@ -8,6 +8,7 @@ import "react-figma-plugin-ds/figma-plugin-ds.css";
 interface ColorInfo {
   hex: string;
   variableName: string | null;
+  type: string;
 }
 
 function App() {
@@ -125,7 +126,12 @@ function App() {
                       className="w-6 h-6 rounded-md border border-gray-200"
                       style={{ backgroundColor: color.hex }}
                     ></div>
-                    <div className="text-xss">{color.hex.toUpperCase()}</div>
+                    <div className="text-xss text-neutral-800">
+                      {color.hex.toUpperCase()}
+                    </div>
+                    <div className="text-xss text-neutral-400">
+                      {color.type}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     {color.variableName ? (
