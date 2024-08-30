@@ -7,28 +7,69 @@ export const pluginApi = createPluginAPI({
   notify(message: string) {
     figma.notify(message);
   },
-  createRectangle(
-    count: number,
-    rotationIncrement: number,
-    color: string,
-    sizeIncrement: number
-  ) {
-    const nodes = [];
-
-    for (let i = 0; i < count; i++) {
-      const rect = figma.createRectangle();
-      rect.x = i * 150;
-      rect.fills = [{ type: "SOLID", color: figma.util.rgb(color) }];
-      rect.rotation = i * rotationIncrement;
-      rect.resize(100 + i * sizeIncrement, 100 + i * sizeIncrement);
-      figma.currentPage.appendChild(rect);
-      nodes.push(rect);
+  getTextStyles(frameId: string) {
+    const frame = figma.getNodeById(frameId) as FrameNode;
+    if (!frame || frame.type !== "FRAME") {
+      return [];
     }
 
-    figma.currentPage.selection = nodes;
-    figma.viewport.scrollAndZoomIntoView(nodes);
+    const textStyles = new Set();
+    const traverseNodes = (node: SceneNode) => {
+      if (node.type === "TEXT") {
+        const style = figma.getStyleById(node.textStyleId as string);
+        if (style) {
+          textStyles.add({ id: style.id, name: style.name });
+        }
+      }
+      if ("children" in node) {
+        node.children.forEach(traverseNodes);
+      }
+    };
+
+    traverseNodes(frame);
+    return Array.from(textStyles);
+  },
+  getColorsFromSelection() {
+    const selection = figma.currentPage.selection;
+    if (selection.length === 0) {
+      return { error: "No frame selected" };
+    }
+
+    const frame = selection[0];
+    if (frame.type !== "FRAME") {
+      return { error: "Selected item is not a frame" };
+    }
+
+    const colors = new Set<string>();
+
+    function traverseNode(node) {
+      if ("fills" in node) {
+        node.fills.forEach((fill) => {
+          if (fill.type === "SOLID") {
+            const { r, g, b } = fill.color;
+            const hexColor = rgbToHex(r, g, b);
+            colors.add(hexColor);
+          }
+        });
+      }
+      if ("children" in node) {
+        node.children.forEach(traverseNode);
+      }
+    }
+
+    traverseNode(frame);
+
+    return { colors: Array.from(colors) };
   },
 });
+
+function rgbToHex(r: number, g: number, b: number): string {
+  const toHex = (value: number) =>
+    Math.round(value * 255)
+      .toString(16)
+      .padStart(2, "0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
 
 let eventCallback = {
   selectionChanged: (selection) => {},
@@ -41,7 +82,7 @@ export const setEventCallback = (name: string, callback: Function) => {
 
 export const uiApi = createUIAPI({
   selectionChanged(selection) {
-    eventCallback.selectionChanged(selection.map((item) => item.id));
+    eventCallback.selectionChanged(selection);
   },
   pageChanged(page) {
     eventCallback.pageChanged(page);

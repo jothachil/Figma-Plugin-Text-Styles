@@ -1,8 +1,8 @@
 {
-  "name": "Rectangler",
+  "name": "LP Color Auditor",
   "id": "1411202798800289088",
   "api": "1.0.0",
-  "networkAccess": { "allowedDomains": ["none"] },
+  "networkAccess": { "allowedDomains": ["https://rsms.me"] },
   "documentAccess": "dynamic-page",
   "main": "dist/code.js",
   "ui": "dist/ui.html",
