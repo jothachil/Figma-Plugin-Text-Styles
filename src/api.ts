@@ -1,267 +1,5 @@
 import { createPluginAPI, createUIAPI } from "figma-jsonrpc";
-const LP_VARIABLES = [
-  {
-    id: "VariableID:5432:369",
-    name: "background/primary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:429",
-    name: "background/secondary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:430",
-    name: "background/Inverse/primary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:431",
-    name: "background/Inverse/secondary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:432",
-    name: "background/brand",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:434",
-    name: "background/negative",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:435",
-    name: "background/postive",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:436",
-    name: "background/light/brand",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:437",
-    name: "background/light/negative",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:438",
-    name: "background/light/postive",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:439",
-    name: "background/light/warning",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:440",
-    name: "background/overlay",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:442",
-    name: "background/pressed/primary-button",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:443",
-    name: "background/pressed/secondary-button",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:444",
-    name: "border/primary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:445",
-    name: "border/selected",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:446",
-    name: "border/inverse",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:447",
-    name: "border/brand",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:448",
-    name: "border/negative",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:450",
-    name: "border/postive",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:451",
-    name: "content/primary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:452",
-    name: "content/secondary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:453",
-    name: "content/tertiary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:456",
-    name: "content/inactive",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:457",
-    name: "content/inverse-primary",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:459",
-    name: "content/negative",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:460",
-    name: "content/warning",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5432:461",
-    name: "content/postive",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-  {
-    id: "VariableID:5434:478",
-    name: "background/warning",
-    description: "",
-    type: "COLOR",
-    scopes: ["ALL_SCOPES"],
-    hiddenFromPublishing: false,
-    codeSyntax: {},
-  },
-];
+import { LP_VARIABLES } from "./variables";
 export const pluginApi = createPluginAPI({
   exit() {
     figma.closePlugin();
@@ -325,6 +63,43 @@ export const pluginApi = createPluginAPI({
     traverseNode(frame);
     console.log(Array.from(colors));
     return { colors: Array.from(colors) };
+  },
+  selectElementsByColor(hex: string) {
+    const selection = [];
+
+    function traverseNode(node) {
+      if ("fills" in node) {
+        node.fills.forEach((fill) => {
+          if (
+            fill.type === "SOLID" &&
+            rgbToHex(fill.color.r, fill.color.g, fill.color.b) === hex
+          ) {
+            selection.push(node);
+          }
+        });
+      }
+      if ("strokes" in node) {
+        node.strokes.forEach((stroke) => {
+          if (
+            stroke.type === "SOLID" &&
+            rgbToHex(stroke.color.r, stroke.color.g, stroke.color.b) === hex
+          ) {
+            selection.push(node);
+          }
+        });
+      }
+      if ("children" in node) {
+        node.children.forEach(traverseNode);
+      }
+    }
+
+    traverseNode(figma.currentPage);
+    figma.currentPage.selection = selection;
+    figma.viewport.scrollAndZoomIntoView(selection);
+
+    return {
+      message: `Selected ${selection.length} elements with color ${hex}`,
+    };
   },
 });
 

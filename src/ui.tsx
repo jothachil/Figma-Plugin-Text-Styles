@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import "./ui.css";
 import { pluginApi } from "./api";
-import { Button, Label } from "react-figma-plugin-ds";
+import { Button, Label, Icon } from "react-figma-plugin-ds";
 import "react-figma-plugin-ds/figma-plugin-ds.css";
 
 interface ColorInfo {
@@ -14,77 +14,6 @@ interface ColorInfo {
 function App() {
   const [colors, setColors] = React.useState<ColorInfo[]>([]);
   const [error, setError] = React.useState<string | null>(null);
-
-  // Predefined array of colors to match against
-  const predefinedColors = [
-    "#F2E6FF",
-    "#ECFDF5",
-    "#FFEBF0",
-    "#F2E6FF",
-    "#F5F5F5",
-    "#EEEEEE",
-    "#E5E5E5",
-    "#D4D4D4",
-    "#A3A3A3",
-    "#737373",
-    "#525252",
-    "#404040",
-    "#262626",
-    "#171717",
-    "#FFF0F4",
-    "#FFD6E0",
-    "#FFAFC3",
-    "#FF7E9E",
-    "#EE537A",
-    "#DB2855",
-    "#9F183A",
-    "#740924",
-    "#510216",
-    "#2A0A12",
-    "#F2E6FF",
-    "#CCA2FC",
-    "#A973F0",
-    "#8649E3",
-    "#6422D6",
-    "#4400C9",
-    "#3100A3",
-    "#21007D",
-    "#140057",
-    "#0A0030",
-    "#000000",
-    "#FFFFFF",
-    "#ECFDF5",
-    "#D1FAE5",
-    "#A7F3D0",
-    "#6EE7B7",
-    "#34D399",
-    "#10B981",
-    "#05A372",
-    "#047555",
-    "#05523C",
-    "#042E23",
-    "#FFF1F1",
-    "#FFD7D9",
-    "#FFB3B8",
-    "#FF8389",
-    "#FA4D56",
-    "#DA1E28",
-    "#A2191F",
-    "#750E13",
-    "#520408",
-    "#2D0709",
-    "#FFFBEB",
-    "#FEF3C7",
-    "#FDE68A",
-    "#FCD34D",
-    "#FBBF24",
-    "#F59E0B",
-    "#C46C05",
-    "#8C4107",
-    "#5E2909",
-    "#301306",
-  ];
-
   const onListColors = async () => {
     try {
       const result = await pluginApi.getColorsFromSelection();
@@ -98,6 +27,14 @@ function App() {
     } catch (err) {
       setError("An error occurred");
       setColors([]);
+    }
+  };
+
+  const onSelectColor = async (hex: string) => {
+    try {
+      await pluginApi.selectElementsByColor(hex);
+    } catch (err) {
+      setError("An error occurred while selecting elements");
     }
   };
 
@@ -133,17 +70,24 @@ function App() {
                       {color.type}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     {color.variableName ? (
                       <span className="text-green-600 text-xss flex items-center gap-1">
-                        {color.variableName}
                         <span>✓</span>
+                        {color.variableName}
                       </span>
                     ) : (
                       <span className="text-red-500 text-xss flex items-center gap-1">
-                        No variable <span className="">✗</span>
+                        <span className="">✗</span> No variable
                       </span>
                     )}
+                    <div className="cursor-pointer">
+                      <Icon
+                        color="black3"
+                        name="visible"
+                        onClick={() => onSelectColor(color.hex)}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
