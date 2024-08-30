@@ -5,8 +5,13 @@ import { pluginApi } from "./api";
 import { Button, Label } from "react-figma-plugin-ds";
 import "react-figma-plugin-ds/figma-plugin-ds.css";
 
+interface ColorInfo {
+  hex: string;
+  variableName: string | null;
+}
+
 function App() {
-  const [colors, setColors] = React.useState<string[]>([]);
+  const [colors, setColors] = React.useState<ColorInfo[]>([]);
   const [error, setError] = React.useState<string | null>(null);
 
   // Predefined array of colors to match against
@@ -86,7 +91,7 @@ function App() {
         setError(result.error);
         setColors([]);
       } else {
-        setColors(result.colors as string[]);
+        setColors(result.colors as ColorInfo[]);
         setError(null);
       }
     } catch (err) {
@@ -97,8 +102,10 @@ function App() {
 
   return (
     <main className="bg-white h-[100vh] relative ">
-      {error && <div className="text-red-500">{error}</div>}
-
+      {error && <Error error={error} />}
+      {colors.length === 0 && (
+        <Error error="No colors found in the selected frame" />
+      )}
       {colors.length > 0 && (
         <div>
           <div className="bg-neutral-100 w-full py-1 px-2">
@@ -107,7 +114,7 @@ function App() {
             </Label>
           </div>
           <div className="w-full overflow-scroll h-[400px]">
-            <div className="flex flex-col pb-10">
+            <div className="flex flex-col pb-16">
               {colors.map((color, index) => (
                 <div
                   key={index}
@@ -116,15 +123,22 @@ function App() {
                   <div className="flex items-center gap-2">
                     <div
                       className="w-6 h-6 rounded-md border border-gray-200"
-                      style={{ backgroundColor: color }}
+                      style={{ backgroundColor: color.hex }}
                     ></div>
-                    <div className="text-xss">{color.toUpperCase()}</div>
+                    <div className="text-xss">{color.hex.toUpperCase()}</div>
                   </div>
-                  {predefinedColors.includes(color.toUpperCase()) ? (
-                    <span className="text-green-500">✓</span>
-                  ) : (
-                    <span className="text-red-500">✗</span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {color.variableName ? (
+                      <span className="text-green-600 text-xss flex items-center gap-1">
+                        {color.variableName}
+                        <span>✓</span>
+                      </span>
+                    ) : (
+                      <span className="text-red-500 text-xss flex items-center gap-1">
+                        No variable <span className="">✗</span>
+                      </span>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -134,7 +148,7 @@ function App() {
 
       <div className="absolute bottom-0 w-full left-0 p-2 border-t border-gray-200 bg-white">
         <Button className="w-full flex justify-center" onClick={onListColors}>
-          List Colors
+          Show all colors
         </Button>
       </div>
     </main>
@@ -142,3 +156,46 @@ function App() {
 }
 
 ReactDOM.render(<App />, document.getElementById("react-page"));
+
+export default function Error({ error }: { error: string }) {
+  return (
+    <div className="flex justify-center items-start h-full p-4 bg-neutral-100 ">
+      <div className="border border-gray-200 px-4 py-6 rounded-md bg-white w-full">
+        <div className="text-center text-gray-500 flex  flex-col items-center gap-2">
+          <svg
+            width="60"
+            height="20"
+            viewBox="0 0 100 60"
+            preserveAspectRatio="none"
+          >
+            <rect
+              x="0"
+              y="0"
+              width="20"
+              height="20"
+              fill="#10B981"
+              rx="4"
+            ></rect>
+            <rect
+              x="30"
+              y="0"
+              width="20"
+              height="20"
+              fill="#FFD7D9"
+              rx="4"
+            ></rect>
+            <rect
+              x="60"
+              y="0"
+              width="20"
+              height="20"
+              fill="#FA4D56"
+              rx="4"
+            ></rect>
+          </svg>
+          <div className="text-xs text-gray-500">{error}</div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,5 +1,267 @@
 import { createPluginAPI, createUIAPI } from "figma-jsonrpc";
-
+const LP_VARIABLES = [
+  {
+    id: "VariableID:5432:369",
+    name: "background/primary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:429",
+    name: "background/secondary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:430",
+    name: "background/Inverse/primary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:431",
+    name: "background/Inverse/secondary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:432",
+    name: "background/brand",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:434",
+    name: "background/negative",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:435",
+    name: "background/postive",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:436",
+    name: "background/light/brand",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:437",
+    name: "background/light/negative",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:438",
+    name: "background/light/postive",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:439",
+    name: "background/light/warning",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:440",
+    name: "background/overlay",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:442",
+    name: "background/pressed/primary-button",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:443",
+    name: "background/pressed/secondary-button",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:444",
+    name: "border/primary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:445",
+    name: "border/selected",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:446",
+    name: "border/inverse",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:447",
+    name: "border/brand",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:448",
+    name: "border/negative",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:450",
+    name: "border/postive",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:451",
+    name: "content/primary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:452",
+    name: "content/secondary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:453",
+    name: "content/tertiary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:456",
+    name: "content/inactive",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:457",
+    name: "content/inverse-primary",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:459",
+    name: "content/negative",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:460",
+    name: "content/warning",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5432:461",
+    name: "content/postive",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+  {
+    id: "VariableID:5434:478",
+    name: "background/warning",
+    description: "",
+    type: "COLOR",
+    scopes: ["ALL_SCOPES"],
+    hiddenFromPublishing: false,
+    codeSyntax: {},
+  },
+];
 export const pluginApi = createPluginAPI({
   exit() {
     figma.closePlugin();
@@ -7,30 +269,9 @@ export const pluginApi = createPluginAPI({
   notify(message: string) {
     figma.notify(message);
   },
-  getTextStyles(frameId: string) {
-    const frame = figma.getNodeById(frameId) as FrameNode;
-    if (!frame || frame.type !== "FRAME") {
-      return [];
-    }
-
-    const textStyles = new Set();
-    const traverseNodes = (node: SceneNode) => {
-      if (node.type === "TEXT") {
-        const style = figma.getStyleById(node.textStyleId as string);
-        if (style) {
-          textStyles.add({ id: style.id, name: style.name });
-        }
-      }
-      if ("children" in node) {
-        node.children.forEach(traverseNodes);
-      }
-    };
-
-    traverseNodes(frame);
-    return Array.from(textStyles);
-  },
   getColorsFromSelection() {
     const selection = figma.currentPage.selection;
+    console.log(selection);
     if (selection.length === 0) {
       return { error: "No frame selected" };
     }
@@ -40,15 +281,20 @@ export const pluginApi = createPluginAPI({
       return { error: "Selected item is not a frame" };
     }
 
-    const colors = new Set<string>();
+    const colors = new Set<{ hex: string; variableName: string | null }>();
 
     function traverseNode(node) {
       if ("fills" in node) {
         node.fills.forEach((fill) => {
           if (fill.type === "SOLID") {
-            const { r, g, b } = fill.color;
-            const hexColor = rgbToHex(r, g, b);
-            colors.add(hexColor);
+            addColor(fill.color, fill.boundVariables?.color);
+          }
+        });
+      }
+      if ("strokes" in node) {
+        node.strokes.forEach((stroke) => {
+          if (stroke.type === "SOLID") {
+            addColor(stroke.color, stroke.boundVariables?.color);
           }
         });
       }
@@ -57,8 +303,24 @@ export const pluginApi = createPluginAPI({
       }
     }
 
-    traverseNode(frame);
+    function addColor(color, boundVariable) {
+      const { r, g, b } = color;
+      const hexColor = rgbToHex(r, g, b);
+      let variableName = null;
 
+      if (boundVariable) {
+        const variableId = boundVariable.id;
+        const variable = LP_VARIABLES.find((v) => v.id === variableId);
+        if (variable) {
+          variableName = variable.name;
+        }
+      }
+
+      colors.add({ hex: hexColor, variableName });
+    }
+
+    traverseNode(frame);
+    console.log(Array.from(colors));
     return { colors: Array.from(colors) };
   },
 });
